@@ -5,8 +5,7 @@ const { generateOTP, isValidEmail } = require("../../helpers/auth/authUtils");
 const { mailSender } = require("../../helpers/email/mailService");
 const authSchema = require("../../models/authSchema");
 
-
-// -----------signup controller 
+// -----------signup controller
 const signup = asyncHandler(async (req, res) => {
   const { fullname, email, password } = req.body;
 
@@ -17,7 +16,6 @@ const signup = asyncHandler(async (req, res) => {
     });
   }
 
-  // 3. Validate email
   if (!email) {
     return res.status(400).json({
       success: false,
@@ -32,7 +30,6 @@ const signup = asyncHandler(async (req, res) => {
     });
   }
 
-  // 4. Validate password
   if (!password) {
     return res.status(400).json({
       success: false,
@@ -47,7 +44,6 @@ const signup = asyncHandler(async (req, res) => {
     });
   }
 
-  // 5. Check if user already exists
   const existingUser = await authSchema.findOne({ email });
 
   if (existingUser) {
@@ -57,10 +53,10 @@ const signup = asyncHandler(async (req, res) => {
     });
   }
 
-  // 6. Generate OTP
+  // ---Generate OTP
   const otp = generateOTP();
 
-  // 7. Save user to database
+  //-------Save  database
   const user = await authSchema.create({
     fullname,
     email,
@@ -69,14 +65,14 @@ const signup = asyncHandler(async (req, res) => {
     otpExpires: new Date(Date.now() + 5 * 60 * 1000),
   });
 
-  // 8. Send OTP to email
+  // ---Send OTP to email
   await mailSender({
     email,
     subject: "OTP Verification",
     otp,
   });
 
-  // 9. Send response
+  // ---Send response
   return res.status(201).json({
     success: true,
     message: "Signup successful. OTP has been sent to your email.",
