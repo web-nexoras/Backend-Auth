@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { emailTemp } = require("./email_temp");
+const {emailTemp}= require ('../../helpers/email/emailTemp.js')
 
 // Create Transporter
 const transporter = nodemailer.createTransport({
