@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+
 
 const authSchema = new mongoose.Schema(
   {
-    // -------------------- Basic Information --------------------
     fullname: {
       type: String,
       required: [true, "Fullname is required"],
@@ -94,6 +95,20 @@ authSchema.methods.comparePassword = function (userPassword) {
 };
 
 
+// -------create password reset token
+
+authSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 
 module.exports = mongoose.model("User", authSchema);

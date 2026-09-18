@@ -1,5 +1,5 @@
-const User = require("../../models/userSchema");
-const asyncHandler = require("../../middlewares/asyncHandler");
+const authSchema = require("../../models/authSchema");
+const {asyncHandler} = require("../../middlewares/asyncHandler");
 const { generateAccessToken, generateRefreshToken } = require("../../helpers/auth/authUtils");
 
 
@@ -27,7 +27,7 @@ const signin = asyncHandler(async (req, res) => {
   }
 
   // 3. Find user
-  const user = await User.findOne({ email }).select("+password");
+  const user = await authSchema.findOne({ email }).select("+password");
 
   if (!user) {
     return res.status(401).json({
