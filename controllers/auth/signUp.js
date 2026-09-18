@@ -66,7 +66,7 @@ const signup = asyncHandler(async (req, res) => {
   });
 
   // ---Send OTP to email
-  await mailSender({
+  await mailSender({   
     email,
     subject: "OTP Verification",
     otp,
