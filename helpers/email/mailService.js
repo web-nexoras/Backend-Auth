@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 const mailSender = async ({ email, subject, otp, resetLink }) => {
   try {
     await transporter.sendMail({
-      from: '"Management Project Team" <team@example.com>',
+      from: '"Backend Authentication" <team@example.com>',
       to: email,
       subject,
       html: emailTemp({
